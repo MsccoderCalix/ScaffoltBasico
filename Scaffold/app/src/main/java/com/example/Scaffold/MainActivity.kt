@@ -56,7 +56,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             GiraffTheme {
-                // A surface container using the 'background' color from the theme
+
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -79,16 +79,7 @@ fun ScaffoldExample() {
 
     Scaffold(
         topBar = {
-            ListTopAppBar(onFilterClick = {it -> it+it }, onSearchClick = { variable_global = 200})
-            /*TopAppBar(
-                colors = TopAppBarDefaults.largeTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-                title = {
-                    Text("MscCoderCalix ${content}")
-                }
-            )*/
+            ListTopAppBar(onFilterClick = {a -> a+a }, onSearchClick = { variable_global = 200}, onVermasClick = {content = "ver mas"})
         },
         bottomBar = {
             BottomAppBar(
@@ -105,7 +96,7 @@ fun ScaffoldExample() {
             }
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { content = "floatingActionButton_Click"}) {
+            FloatingActionButton(onClick = { content = "Boton Flotante"}) {
                 Icon(Icons.Default.Add, contentDescription = "Add")
             }
         }
@@ -124,6 +115,8 @@ fun ScaffoldExample() {
                     $content
                 """.trimIndent()
             )
+            if(content.length > 20)
+                Text(text = "Longitud de: \"$content\" es ${content.length} > 20")
         }
     }
 }
@@ -219,19 +212,20 @@ fun SmallTopAppBarExample() {
 internal fun ListTopAppBar(
     onSearchClick: () -> Unit = {},
     onFilterClick: (Int) -> Int = {-1},
+    onVermasClick: () -> Unit = {},
 ) {
     var content by remember {mutableStateOf(1)}
 
     TopAppBar(
         title = { Text(text = "MscCoderCalix Items ${content + variable_global}") },
         navigationIcon = {
-            IconButton(onClick = { content = 0 }) {
+            IconButton(onClick = { content = 0; }) {
                 Icon(imageVector = Icons.Filled.Menu, contentDescription = "Abrir menú")
             }
         },
         actions = {
 
-            IconButton(onClick = { content += 20 }) {
+            IconButton(onClick = { onSearchClick() }) {
                 Icon(imageVector = Icons.Filled.Search, contentDescription = "Buscar")
             }
 
@@ -242,7 +236,7 @@ internal fun ListTopAppBar(
                 )
             }
 
-            IconButton(onClick = { onSearchClick() }) {
+            IconButton(onClick = { onVermasClick(); content = 5555 }) {
                 Icon(imageVector = Icons.Filled.MoreVert, contentDescription = "Ver más")
             }
         }
